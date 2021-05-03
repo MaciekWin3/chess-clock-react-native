@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Button, Alert } from "react-native";
 
 export default function Menu(){
 
-    
+    const [showModal, setShowModal] = useState(true);
 
     return(
         <View style={styles.menu}>

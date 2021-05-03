@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AppLoading from 'expo-app-loading';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Modal } from 'react-native';
 import { useFonts, Arimo_400Regular, Arimo_700Bold } from '@expo-google-fonts/arimo';
 import Menu from './components/menu';
 import { Timer } from 'react-native-stopwatch-timer';
@@ -10,45 +10,51 @@ export default function App() {
 
   let winner = "white";
 
-  const createThreeButtonAlert = (winner) =>
-  Alert.alert(
-  "Time is up!",
-  "Winner: " + winner,
-  [
-      {
-      text: "Ask me later",
-      onPress: () => console.log("Ask me later pressed")
-      },
-      {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel"
-      },
-      { text: "OK", onPress: () => {
-        console.log(winner);
-          if(winner == "white"){
-            console.log("działa");
-            setIsBlackTurn(false);         
-            setResetBlackClock(true);           
-          }
-          else{
-            setIsWhiteTurn(false);
-            setResetWhiteClock(true);
-            console.log("xd");
-          }          
-        } 
-      } 
-  ]
-);
+  const [ showModal, setShowModal] = useState(false);
 
-  const [ whiteTimerDuration, setWhiteTimerDuration ] = useState(4000);
+  const [ whiteTimerDuration, setWhiteTimerDuration ] = useState(5000);
   const [ isWhiteTurn, setIsWhiteTurn ] = useState(false);
   const [ resetWhiteClock, setResetWhiteClock ] = useState(false);
-  const [ showsMsWhite, setShowMsWhite ] = useState(false);
 
-  const [ blackTimerDuration, setBlackTimerDuration ] = useState(4000);
+  const [ blackTimerDuration, setBlackTimerDuration ] = useState(5000);
   const [ isBlackTurn, setIsBlackTurn ] = useState(false);
   const [ resetBlackClock, setResetBlackClock ] = useState(false);
+
+  const setTimers = (timers) => {
+  
+    let white = parseInt(timers.whiteTimer);
+    let black = parseInt(timers.blackTimer);
+
+    setWhiteTimerDuration(white);
+    setBlackTimerDuration(black);
+
+    setResetWhiteClock(true);
+    setResetBlackClock(true);
+
+    setIsBlackTurn(false);
+    setIsWhiteTurn(false);
+
+    setResetWhiteClock(false);
+    setResetBlackClock(false);
+
+    setShowModal(false);
+
+    console.log(whiteTimerDuration);
+    console.log(blackTimerDuration)
+  }
+
+  const resetTimers = () => {
+    
+    setIsBlackTurn(false);
+    setIsWhiteTurn(false);
+
+    setResetWhiteClock(true);
+    setResetBlackClock(true);
+  }
+
+  const openAndCloseModal = () => {
+    setShowModal(!showModal);
+  }
 
   const handleWhitePress = () => {
     setResetWhiteClock(false);
@@ -62,6 +68,18 @@ export default function App() {
     setIsBlackTurn(false);
   }
 
+  const createThreeButtonAlert = (winner) =>
+    Alert.alert(
+    "Time is up!",
+    "Winner: " + winner,
+    [
+        { text: "OK", onPress: () => {
+            setResetBlackClock(true);
+            setResetWhiteClock(true);       
+          } 
+        } 
+    ]
+  );
 
   let [fontsLoaded] = useFonts({
     Arimo_400Regular,
@@ -72,12 +90,11 @@ export default function App() {
     return <AppLoading />
   }
   return (
-    <View style={styles.container}>
-      
+    <View style={styles.container}>     
       <View style={styles.blackField}>
-        <TouchableOpacity onPress={handleBlackPress}>
+        <TouchableOpacity onPress={handleBlackPress} style={styles.blackOpacity}>
           <Timer
-            totalDuration={blackTimerDuration}
+            totalDuration={whiteTimerDuration}
             msecs = {true}
             //Time Duration
             start={isBlackTurn}
@@ -90,22 +107,21 @@ export default function App() {
               //wygrana białych - ten timer działa białych ne
               winner = "white";  
               createThreeButtonAlert(winner);      
-              setBlackTimerDuration(4000);
             }}
             //can call a function On finish of the time
             getTime={(time) => {
-              console.log(time);
+              //console.log(time);
             }}  
           />       
         </TouchableOpacity>              
       </View>
       <View style={styles.menu}>
-        <Menu />
+        <Menu showModal={showModal} openAndCloseModal={openAndCloseModal} setTimers={setTimers} resetTimers={resetTimers} />
       </View>
       <View style={styles.whiteField}> 
-        <TouchableOpacity onPress={handleWhitePress}>
+        <TouchableOpacity onPress={handleWhitePress} style={styles.blackOpacity}>
           <Timer
-            totalDuration={whiteTimerDuration}
+            totalDuration={blackTimerDuration}
             msecs = {true}
             //Time Duration
             start={isWhiteTurn}
@@ -117,12 +133,11 @@ export default function App() {
             handleFinish={() => {   
               //wygrana czarnych
               winner = "black";
-              createThreeButtonAlert(winner);
-              setWhiteTimerDuration(4000);                     
+              createThreeButtonAlert(winner);                 
             }}
             //can call a function On finish of the time
             getTime={(time) => {
-              console.log(time);
+              //console.log(time);
               
             }}
           />       
@@ -131,6 +146,7 @@ export default function App() {
     </View>
   );
 }
+
 
 
 const styles = StyleSheet.create({
@@ -167,7 +183,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo_700Bold',
     color: '#263238',
     fontSize: 70
+  },
+  whiteOpacity: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  blackOpacity: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
+
 });
 
 const whiteFieldOptions = {
