@@ -9,21 +9,27 @@ import { Timer } from 'react-native-stopwatch-timer';
 export default function App() {
 
   let winner = "white";
+  
+  let white = 5000;
+  let black = 5000;
 
   const [ showModal, setShowModal] = useState(false);
 
-  const [ whiteTimerDuration, setWhiteTimerDuration ] = useState(5000);
+  const [ whiteTimerDuration, setWhiteTimerDuration ] = useState(white);
   const [ isWhiteTurn, setIsWhiteTurn ] = useState(false);
   const [ resetWhiteClock, setResetWhiteClock ] = useState(false);
 
-  const [ blackTimerDuration, setBlackTimerDuration ] = useState(5000);
+  const [ blackTimerDuration, setBlackTimerDuration ] = useState(black);
   const [ isBlackTurn, setIsBlackTurn ] = useState(false);
   const [ resetBlackClock, setResetBlackClock ] = useState(false);
 
+  const [ showWhiteMs, setShowWhiteMs ] = useState(false);
+  const [ showBlackMs, SetShowBlackMs ] = useState(false);
+
   const setTimers = (timers) => {
   
-    let white = parseInt(timers.whiteTimer);
-    let black = parseInt(timers.blackTimer);
+    white = parseInt(timers.whiteTimer);
+    black = parseInt(timers.blackTimer);
 
     setWhiteTimerDuration(white);
     setBlackTimerDuration(black);
@@ -39,32 +45,57 @@ export default function App() {
 
     setShowModal(false);
 
-    console.log(whiteTimerDuration);
-    console.log(blackTimerDuration)
-  }
-
-  const resetTimers = () => {
-    
     setIsBlackTurn(false);
     setIsWhiteTurn(false);
 
     setResetWhiteClock(true);
     setResetBlackClock(true);
+
+    console.log(whiteTimerDuration);
+    console.log(blackTimerDuration)
+  }
+
+  const resetTimers = () => {
+
+      if(isBlackTurn == true){
+        setIsBlackTurn(false);
+        setResetBlackClock(true);
+        setResetWhiteClock(true);
+      }
+      else if (isWhiteTurn == true){
+        setIsWhiteTurn(false);
+        setResetBlackClock(true);
+        setResetWhiteClock(true);
+      }
+      else{
+        setIsBlackTurn(false);
+        setIsWhiteTurn(false)
+        setResetBlackClock(true);
+        setResetWhiteClock(true);
+      }
+
+      setIsBlackTurn(false);
+      setIsWhiteTurn(false);
+      setWhiteTimerDuration(white);
+      setBlackTimerDuration(black);
   }
 
   const openAndCloseModal = () => {
+    resetTimers();
     setShowModal(!showModal);
   }
 
   const handleWhitePress = () => {
     setResetWhiteClock(false);
-    setIsBlackTurn(!isBlackTurn);
+    setResetBlackClock(false);
+    setIsBlackTurn(true);
     setIsWhiteTurn(false);
   }
 
   const handleBlackPress = () => {
+    setResetWhiteClock(false);
     setResetBlackClock(false);
-    setIsWhiteTurn(!isWhiteTurn);
+    setIsWhiteTurn(true);
     setIsBlackTurn(false);
   }
 
@@ -74,8 +105,7 @@ export default function App() {
     "Winner: " + winner,
     [
         { text: "OK", onPress: () => {
-            setResetBlackClock(true);
-            setResetWhiteClock(true);       
+          resetTimers();       
           } 
         } 
     ]
@@ -92,17 +122,13 @@ export default function App() {
   return (
     <View style={styles.container}>     
       <View style={styles.blackField}>
-        <TouchableOpacity onPress={handleBlackPress} style={styles.blackOpacity}>
+        <TouchableOpacity onPress={handleBlackPress} style={styles.blackOpacity} disabled={isWhiteTurn}>
           <Timer
             totalDuration={whiteTimerDuration}
             msecs = {true}
-            //Time Duration
             start={isBlackTurn}
-            //To start
             reset={resetBlackClock}
-            //To reset
             options={blackFieldOptions}
-            //options for the styling
             handleFinish={() => {
               //wygrana białych - ten timer działa białych ne
               winner = "white";  
@@ -110,7 +136,7 @@ export default function App() {
             }}
             //can call a function On finish of the time
             getTime={(time) => {
-              //console.log(time);
+              console.log(time);
             }}  
           />       
         </TouchableOpacity>              
@@ -119,26 +145,20 @@ export default function App() {
         <Menu showModal={showModal} openAndCloseModal={openAndCloseModal} setTimers={setTimers} resetTimers={resetTimers} />
       </View>
       <View style={styles.whiteField}> 
-        <TouchableOpacity onPress={handleWhitePress} style={styles.blackOpacity}>
+        <TouchableOpacity onPress={handleWhitePress} style={styles.blackOpacity} disabled={isBlackTurn}>
           <Timer
             totalDuration={blackTimerDuration}
             msecs = {true}
-            //Time Duration
             start={isWhiteTurn}
-            //To start
             reset={resetWhiteClock}
-            //To reset
             options={whiteFieldOptions}
-            //options for the styling
             handleFinish={() => {   
               //wygrana czarnych
               winner = "black";
               createThreeButtonAlert(winner);                 
             }}
-            //can call a function On finish of the time
             getTime={(time) => {
-              //console.log(time);
-              
+              //console.log(time);              
             }}
           />       
         </TouchableOpacity>              

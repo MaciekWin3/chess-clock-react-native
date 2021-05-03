@@ -1,20 +1,22 @@
 import React from 'react';
-import { StyleSheet, View, Button, Modal, Text, TextInput } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'
+import { StyleSheet, View, Button, Modal, Text, TextInput, Image } from 'react-native';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons'
 import { Formik } from 'formik';
+import CustomButton from '../components/button';
 
 
 export default function Menu({showModal, openAndCloseModal, setTimers, resetTimers}){
 
     return(
         <View style={styles.menu}>
-            <Modal visible={showModal} animationType='slide'>
-                <View style={styles.modal}>
+            <Modal visible={showModal} animationType='slide'>           
+                <View style={styles.modal}>      
+                <FontAwesome5 style={styles.logo} size={50} color="#333" name="chess"/>         
                     <View style={styles.container}>
                         <Formik
                             initialValues={{
                                 whiteTimer: 5000,
-                                blackTImer: 5000,
+                                blackTimer: 5000,
                                 showMoves: false
                             }}
                             onSubmit = {(values) => {
@@ -23,26 +25,56 @@ export default function Menu({showModal, openAndCloseModal, setTimers, resetTime
                             >
                             {(props) => (
                                 <View>
+                                    <Text style={styles.text}>White Timer</Text>
                                     <TextInput
-                                    placeholder="5000"
-                                    onChangeText={props.handleChange('whiteTimer')}
-                                    style={styles.input}
-                                    value={props.values.title} //?
-                                    keyboardType='numeric'
+                                        placeholder="5000"
+                                        onChangeText={props.handleChange('whiteTimer')}
+                                        style={styles.input}
+                                        value={props.values.title} //?
+                                        keyboardType='numeric'
                                     />
+                                    <Text style={styles.text}>Black Timer</Text>
                                     <TextInput
-                                    placeholder="5000"
-                                    onChangeText={props.handleChange('blackTimer')}
-                                    style={styles.input}
-                                    value={props.values.title} //?
-                                    keyboardType='numeric'
+                                        placeholder="5000"
+                                        onChangeText={props.handleChange('blackTimer')}
+                                        style={styles.input}
+                                        value={props.values.title} //?
+                                        keyboardType='numeric'
                                     />
-                                    <Button title='Save changes' color='green' onPress={props.handleSubmit}/>
+                                    <View style={styles.inputsContainer}>
+                                        <Text>H:</Text>
+                                        <TextInput
+                                            placeholder="5000"
+                                            onChangeText={props.handleChange('blackTimer')}
+                                            style={styles.input}
+                                            value={props.values.title} //?
+                                            keyboardType='numeric'
+                                        />
+                                        <Text>M:</Text>
+                                        <TextInput
+                                            placeholder="5000"
+                                            onChangeText={props.handleChange('blackTimer')}
+                                            style={styles.input}
+                                            value={props.values.title} //?
+                                            keyboardType='numeric'
+                                        />
+                                        <Text>S:</Text>
+                                        <TextInput
+                                            placeholder="5000"
+                                            onChangeText={props.handleChange('blackTimer')}
+                                            style={styles.input}
+                                            value={props.values.title} //?
+                                            keyboardType='numeric'
+                                        />
+                                    </View>
+                                    <CustomButton text='Save changes' color='green' onPress={props.handleSubmit}/>
+                                    <Text></Text>
+                                    <CustomButton text='Close' color='red' onPress={openAndCloseModal}/>
                                 </View>
                             )}
                         </Formik>
                     </View>
-                    <Button onPress={openAndCloseModal} title='close' color='red' />
+                    
                 </View>
             </Modal>
 
@@ -61,7 +93,18 @@ const styles = StyleSheet.create({
         padding: 20
     },
     icon: {
-        paddingHorizontal: 60
+        paddingHorizontal: 60,
+        alignSelf: 'center'
+    },
+    logo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 18,
+        borderWidth: 1,
+        borderColor: '#f2f2f2',
+        padding: 10,
+        borderRadius: 10,
+        alignSelf: 'center',
     },
     modal: {
         flex: 1,
@@ -69,13 +112,27 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: '#ddd',
-        padding: 10,
+        paddingVertical: 10,
         fontSize: 18,
         borderRadius: 6,
+        margin: 12,
+        flex: 1
     },
     container: {
         flex: 1,
         padding: 20,
     },
-
+    text: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        fontWeight: 'bold'
+    },
+    inputsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        //justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10
+    }
 })
