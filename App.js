@@ -26,10 +26,12 @@ export default function App() {
   const [ showWhiteMs, setShowWhiteMs ] = useState(false);
   const [ showBlackMs, SetShowBlackMs ] = useState(false);
 
-  const setTimers = (timers) => {
+  const [ moveCounter, setMoveCounter ] = useState(0);
+
+  const setTimers = (whiteTimer, blackTimer) => {
   
-    white = parseInt(timers.whiteTimer);
-    black = parseInt(timers.blackTimer);
+    white = parseInt(whiteTimer);
+    black = parseInt(blackTimer);
 
     setWhiteTimerDuration(white);
     setBlackTimerDuration(black);
@@ -50,6 +52,8 @@ export default function App() {
 
     setResetWhiteClock(true);
     setResetBlackClock(true);
+
+    setMoveCounter(0);
 
     console.log(whiteTimerDuration);
     console.log(blackTimerDuration)
@@ -78,6 +82,8 @@ export default function App() {
       setIsWhiteTurn(false);
       setWhiteTimerDuration(white);
       setBlackTimerDuration(black);
+
+      setMoveCounter(0);
   }
 
   const openAndCloseModal = () => {
@@ -97,6 +103,7 @@ export default function App() {
     setResetBlackClock(false);
     setIsWhiteTurn(true);
     setIsBlackTurn(false);
+    setMoveCounter(moveCounter + 1);
   }
 
   const createThreeButtonAlert = (winner) =>
@@ -142,10 +149,10 @@ export default function App() {
         </TouchableOpacity>              
       </View>
       <View style={styles.menu}>
-        <Menu showModal={showModal} openAndCloseModal={openAndCloseModal} setTimers={setTimers} resetTimers={resetTimers} />
+        <Menu showModal={showModal} moveCounter={moveCounter} openAndCloseModal={openAndCloseModal} setTimers={setTimers} resetTimers={resetTimers} />
       </View>
       <View style={styles.whiteField}> 
-        <TouchableOpacity onPress={handleWhitePress} style={styles.blackOpacity} disabled={isBlackTurn}>
+        <TouchableOpacity onPress={handleWhitePress} style={styles.blackOpacity} disabled={isBlackTurn || moveCounter == 0}>
           <Timer
             totalDuration={blackTimerDuration}
             msecs = {true}
