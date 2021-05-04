@@ -137,13 +137,12 @@ export default function App() {
             reset={resetBlackClock}
             options={blackFieldOptions}
             handleFinish={() => {
-              //wygrana białych - ten timer działa białych ne
+              //white win
               winner = "white";  
               createThreeButtonAlert(winner);      
             }}
-            //can call a function On finish of the time
             getTime={(time) => {
-              console.log(time);
+              //console.log(time);
             }}  
           />       
         </TouchableOpacity>              
@@ -160,7 +159,7 @@ export default function App() {
             reset={resetWhiteClock}
             options={whiteFieldOptions}
             handleFinish={() => {   
-              //wygrana czarnych
+              //black win
               winner = "black";
               createThreeButtonAlert(winner);                 
             }}

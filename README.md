@@ -9,4 +9,3 @@ Simple React-Native Chess Clock application with validation (Formik and Yup), cu
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-assets/screenshots/modal.png

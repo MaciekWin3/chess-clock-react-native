@@ -7,10 +7,10 @@ import CustomButton from '../components/button';
 import Card from '../components/card';
 
 const TimersSchema = yup.object().shape({
-    whiteHoursTimer: yup.number().integer().min(0,"Number too small").max(6,"Number too big").typeError("Provide a positice number, less than 7"),
+    whiteHoursTimer: yup.number().integer().min(0,"Number too small").max(11,"Number too big").typeError("Provide a positice number, less than 11"),
     whiteMinutesTimer: yup.number().integer().min(0,"Number too small").max(59,"Number too big").typeError("Provide a positice number, less than 60"),
     whiteSecondsTimer: yup.number().integer().min(0,"Number too small").max(59,"Number too big").typeError("Provide a positice number, less than 60"),
-    blackHoursTimer: yup.number().integer().min(0,"Number too small").max(6,"Number too big").typeError("Provide a positice number, less than 7"),
+    blackHoursTimer: yup.number().integer().min(0,"Number too small").max(11,"Number too big").typeError("Provide a positice number, less than 11"),
     blackMinutesTimer: yup.number().integer().min(0,"Number too small").max(59,"Number too big").typeError("Provide a positice number, less than 60"),
     blackSecondsTimer: yup.number().integer().min(0,"Number too small").max(59,"Number too big").typeError("Provide a positice number, less than 60"),
 })

@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@expo-google-fonts/arimo": "^0.1.0",
+    "@expo-google-fonts/orbitron": "^0.1.0",
     "@expo-google-fonts/rubik": "^0.1.0",
+    "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/slider": "^3.0.3",
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
@@ -21,8 +23,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-stopwatch-timer": "0.0.21",
     "react-native-web": "~0.13.12",
-    "yup": "^0.32.9",
-    "@react-native-community/datetimepicker": "3.2.0"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
